@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class PhoneDialerActivity extends AppCompatActivity {
     private EditText editText;
@@ -37,6 +38,16 @@ public class PhoneDialerActivity extends AppCompatActivity {
                 }
             } else if (v.getId() == R.id.refuse) {
                 finish();
+            } else if (v.getId() == R.id.contacts) {
+                System.out.println("Save it");
+                String phoneNumber = editText.getText().toString();
+                if (phoneNumber.length() > 0) {
+                    Intent intent = new Intent("ro.pub.cs.systems.eim.lab04.contactsmanager.intent.action.ContactsManagerActivity");
+                    intent.putExtra("ro.pub.cs.systems.eim.lab04.contactsmanager.PHONE_NUMBER_KEY", phoneNumber);
+                    startActivityForResult(intent, 1);
+                } else {
+                    Toast.makeText(getApplication(), getResources().getString(R.string.phone_error), Toast.LENGTH_LONG).show();
+                }
             } else {
                 Button button = (Button)v;
                 editText.append(button.getText());
@@ -78,6 +89,8 @@ public class PhoneDialerActivity extends AppCompatActivity {
         button = (ImageButton)findViewById(R.id.call);
         button.setOnClickListener(new ButtonListener());
         button = (ImageButton)findViewById(R.id.refuse);
+        button.setOnClickListener(new ButtonListener());
+        button = (ImageButton)findViewById(R.id.contacts);
         button.setOnClickListener(new ButtonListener());
     }
 }
